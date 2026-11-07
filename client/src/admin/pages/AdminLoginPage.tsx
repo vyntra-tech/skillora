@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
-import { ShieldCheck, Mail, Lock, Loader2, AlertCircle } from 'lucide-react';
+import { ShieldCheck, Mail, Lock, Loader2, AlertCircle, Sparkles, Eye, EyeOff, KeyRound, Check } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { SkilloraLogo } from '../../components/common/SkilloraLogo';
 import { ThemeToggle } from '../../components/common/ThemeToggle';
@@ -12,9 +12,19 @@ export const AdminLoginPage: React.FC = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [filledLabel, setFilledLabel] = useState<string | null>(null);
+
+  const handleAutoFill = (fillEmail: string, fillPass: string) => {
+    setEmail(fillEmail);
+    setPassword(fillPass);
+    setError(null);
+    setFilledLabel(fillEmail);
+    setTimeout(() => setFilledLabel(null), 2500);
+  };
 
   // If already authenticated as admin, redirect to /admin
   React.useEffect(() => {
@@ -88,6 +98,77 @@ export const AdminLoginPage: React.FC = () => {
             </div>
           )}
 
+          {/* Quick 1-Click Auto-Fill Demo Credentials */}
+          <div className="mb-6 p-4 rounded-2xl bg-brand-50/70 dark:bg-brand-950/40 border border-brand-200 dark:border-brand-800/50 shadow-sm">
+            <div className="flex items-center justify-between mb-2.5">
+              <span className="text-xs font-bold text-text-primary flex items-center gap-1.5">
+                <Sparkles className="w-4 h-4 text-brand-primary" />
+                Quick Admin Login
+              </span>
+              <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-brand-primary/10 text-brand-primary">
+                1-Click Auto Fill
+              </span>
+            </div>
+
+            <div className="space-y-2">
+              <button
+                type="button"
+                onClick={() => handleAutoFill('admin@skillora.com', 'admin123456')}
+                className="w-full text-left p-2.5 rounded-xl bg-surface border border-border-color hover:border-brand-primary hover:shadow-sm transition-all flex items-center justify-between group cursor-pointer"
+              >
+                <div className="min-w-0 pr-2">
+                  <p className="font-bold text-text-primary text-xs group-hover:text-brand-primary transition-colors truncate">
+                    admin@skillora.com
+                  </p>
+                  <p className="text-[11px] text-text-muted font-mono mt-0.5">
+                    Password: <span className="font-semibold text-text-primary">admin123456</span>
+                  </p>
+                </div>
+                <span className="shrink-0 text-xs font-bold text-white bg-brand-primary hover:bg-brand-hover px-3 py-1.5 rounded-lg transition-all flex items-center gap-1 shadow-xs">
+                  {filledLabel === 'admin@skillora.com' ? (
+                    <>
+                      <Check className="w-3.5 h-3.5" />
+                      <span>Filled!</span>
+                    </>
+                  ) : (
+                    <>
+                      <KeyRound className="w-3.5 h-3.5" />
+                      <span>Auto Fill</span>
+                    </>
+                  )}
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleAutoFill('admin@talentpulse.com', 'admin123456')}
+                className="w-full text-left p-2.5 rounded-xl bg-surface border border-border-color hover:border-brand-primary hover:shadow-sm transition-all flex items-center justify-between group cursor-pointer"
+              >
+                <div className="min-w-0 pr-2">
+                  <p className="font-bold text-text-primary text-xs group-hover:text-brand-primary transition-colors truncate">
+                    admin@talentpulse.com
+                  </p>
+                  <p className="text-[11px] text-text-muted font-mono mt-0.5">
+                    Password: <span className="font-semibold text-text-primary">admin123456</span>
+                  </p>
+                </div>
+                <span className="shrink-0 text-xs font-bold text-white bg-brand-primary hover:bg-brand-hover px-3 py-1.5 rounded-lg transition-all flex items-center gap-1 shadow-xs">
+                  {filledLabel === 'admin@talentpulse.com' ? (
+                    <>
+                      <Check className="w-3.5 h-3.5" />
+                      <span>Filled!</span>
+                    </>
+                  ) : (
+                    <>
+                      <KeyRound className="w-3.5 h-3.5" />
+                      <span>Auto Fill</span>
+                    </>
+                  )}
+                </span>
+              </button>
+            </div>
+          </div>
+
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-xs font-bold text-text-primary mb-1.5">
@@ -121,13 +202,21 @@ export const AdminLoginPage: React.FC = () => {
               <div className="relative">
                 <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
                 <input
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-surface border border-border-color text-text-primary text-xs focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary placeholder:text-text-muted/60 transition-colors"
+                  className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-surface border border-border-color text-text-primary text-xs focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary placeholder:text-text-muted/60 transition-colors"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-primary p-1 rounded-lg transition-colors cursor-pointer"
+                  title={showPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
               </div>
             </div>
 
