@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { MapPin, Calendar, Banknote, ArrowRight, Sparkles, Clock } from 'lucide-react';
 import { Internship } from '../../types';
 import { ApplyModal } from './ApplyModal';
+import { getMediaUrl } from '../../utils/url';
 
 interface InternshipCardProps {
   internship: Internship;
@@ -12,7 +13,7 @@ export const InternshipCard: React.FC<InternshipCardProps> = ({ internship }) =>
   const [isApplyOpen, setIsApplyOpen] = useState(false);
 
   const companyLogoUrl =
-    internship.companyLogo ||
+    getMediaUrl(internship.companyLogo) ||
     `https://ui-avatars.com/api/?name=${encodeURIComponent(internship.companyName || 'Company')}&background=6D5DFB&color=fff&size=128&bold=true`;
 
   return (

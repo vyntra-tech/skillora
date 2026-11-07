@@ -14,13 +14,14 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': {
-        target: 'http://localhost:6001',
+        target: process.env.VITE_BACKEND_URL || 'https://skillora-1-qx0w.onrender.com',
         changeOrigin: true,
         secure: false,
       },
       '/uploads': {
-        target: 'http://localhost:6001',
+        target: process.env.VITE_BACKEND_URL || 'https://skillora-1-qx0w.onrender.com',
         changeOrigin: true,
+        secure: false,
       },
     },
   },

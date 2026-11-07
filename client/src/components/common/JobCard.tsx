@@ -17,6 +17,7 @@ import { Job } from '../../types';
 import { useAuth } from '../../context/AuthContext';
 import { ApplyModal } from './ApplyModal';
 import { JobShareModal } from './JobShareModal';
+import { getMediaUrl } from '../../utils/url';
 
 interface JobCardProps {
   job: Job;
@@ -60,7 +61,7 @@ export const JobCard: React.FC<JobCardProps> = ({ job, onBookmarkChange }) => {
             <div className="flex items-center gap-3">
               {job.companyLogo ? (
                 <img
-                  src={job.companyLogo}
+                  src={getMediaUrl(job.companyLogo)}
                   alt={job.companyName}
                   className="w-12 h-12 rounded-2xl object-contain bg-white p-1 border border-border-color shadow-sm"
                   loading="lazy"
@@ -101,11 +102,10 @@ export const JobCard: React.FC<JobCardProps> = ({ job, onBookmarkChange }) => {
                 type="button"
                 onClick={handleBookmark}
                 disabled={isSaving}
-                className={`p-2 rounded-xl border transition-colors ${
-                  saved
+                className={`p-2 rounded-xl border transition-colors ${saved
                     ? 'bg-brand-50 dark:bg-brand-900/30 border-brand-primary/40 text-brand-primary'
                     : 'bg-surface border-border-color text-text-muted hover:text-text-primary hover:bg-surface-2'
-                }`}
+                  }`}
                 title={saved ? 'Remove from saved' : 'Save job'}
               >
                 <Bookmark className={`w-4 h-4 ${saved ? 'fill-current' : ''}`} />

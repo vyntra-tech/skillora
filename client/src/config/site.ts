@@ -4,7 +4,8 @@ export const siteConfig = {
   supportingText: 'Your smarter path to jobs, internships and career growth.',
   description: 'Skillora helps you discover jobs, internships, companies and career resources to build your future.',
   url: 'http://localhost:5174',
-  apiUrl: '/api/v1',
+  backendUrl: (import.meta as any).env?.VITE_BACKEND_URL || 'https://skillora-1-qx0w.onrender.com',
+  apiUrl: (import.meta as any).env?.VITE_API_URL || 'https://skillora-1-qx0w.onrender.com/api/v1',
   navItems: [
     { label: 'Jobs', href: '/jobs' },
     { label: 'Internships', href: '/internships' },

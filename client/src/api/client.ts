@@ -1,7 +1,13 @@
 import axios from 'axios';
 
+// Get backend API URL from environment variable or fallback to deployed Render backend
+const rawUrl = (import.meta as any).env?.VITE_API_URL || 'https://skillora-1-qx0w.onrender.com/api/v1';
+export const API_BASE_URL = rawUrl.endsWith('/api/v1')
+  ? rawUrl
+  : `${rawUrl.replace(/\/+$/, '')}/api/v1`;
+
 export const apiClient = axios.create({
-  baseURL: '/api/v1',
+  baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
